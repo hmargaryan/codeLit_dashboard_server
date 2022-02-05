@@ -17,14 +17,14 @@ type Role struct {
 }
 
 type Candidate struct {
-	ID 				int64
-	Name 			string
-	Surname 	string
-	Email 		string
-	Resume 		string
-	Status 		string
-	Vacancy 	Vacancy
-	Review 		Review
+	ID int64
+	Name string
+	Surname string
+	Email string
+	Resume string
+	Status string
+	Vacancy Vacancy
+	Review Review
 }
 
 type Vacancy struct {
