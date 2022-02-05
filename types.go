@@ -12,8 +12,8 @@ type User struct {
 }
 
 type Role struct {
-	ID 		int64
-	Name 	string
+	ID int64
+	Name string
 }
 
 type Candidate struct {
@@ -28,39 +28,39 @@ type Candidate struct {
 }
 
 type Vacancy struct {
-	ID 						int64
-	Name 					string
-	Description 	string
-	Stages 				int64
+	ID int64
+	Name string
+	Description string
+	Stages int64
 }
 
 type Review struct {
-	ID 					int64
-	Points 			int64
-	Result 			Result
-	Feedbacks 	[]Feedback 
+	ID int64
+	Points int64
+	Result Result
+	Feedbacks []Feedback 
 }
 
 type Result struct {
-	ID 		int64
-	Name 	string
+	ID int64
+	Name string
 }
 
 type Feedback struct {
-	ID 						int64
-	Text 					string
-	QuestionID 		int64
+	ID int64
+	Text string
+	QuestionID int64
 }
 
 type Template struct {
-	ID 					int64
-	Name 				string
-	Questions 	[]Question
+	ID int64
+	Name string
+	Questions []Question
 }
 
 type Question stuct {
-	ID 				int64
-	Text 			string
-	Template 	string
-	Solution 	string
+	ID int64
+	Text string
+	Template string
+	Solution string
 }
