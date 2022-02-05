@@ -58,7 +58,7 @@ type Template struct {
 	Questions []Question
 }
 
-type Question stuct {
+type Question struct {
 	ID int64
 	Text string
 	Template string
