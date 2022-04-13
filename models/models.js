@@ -17,11 +17,14 @@ const Workspace = sequelize.define('workspace', {
   headerBC: { type: DataTypes.STRING }
 })
 
-const WorkspaceUser = sequelize.define('workspaceUser', {})
+const WorkspaceMember = sequelize.define('workspaceMember', {
+  canAddCandidate: { type: DataTypes.BOOLEAN, defaultValue: false },
+  role: { type: DataTypes.STRING, allowNull: false }
+})
 
-Workspace.belongsToMany(User, { through: WorkspaceUser })
+Workspace.belongsToMany(User, { through: WorkspaceMember })
 Workspace.belongsTo(User, { foreignKey: 'owner' })
 
-User.belongsToMany(Workspace, { through: WorkspaceUser })
+User.belongsToMany(Workspace, { through: WorkspaceMember })
 
-module.exports = { User, Workspace, WorkspaceUser }
+module.exports = { User, Workspace, WorkspaceMember }
