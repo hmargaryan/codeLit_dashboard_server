@@ -41,5 +41,6 @@ const addUserSchema = Yup.object().shape({
 })
 
 router.post('/add', authMiddleware, workspaceMemberMiddleware, validationMiddleware(addUserSchema), workspaceMemberController.addWorkspaceMember)
+router.delete('/remove/:id', authMiddleware, workspaceMemberMiddleware, workspaceMemberController.removeWorkspaceMember)
 
 module.exports = router

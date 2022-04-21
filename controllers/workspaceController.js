@@ -67,6 +67,7 @@ class WorkspaceController {
           "workspaceMembers"."canAddCandidate"
           FROM "workspaceMembers", "users"
           WHERE "workspaceMembers"."workspaceId" = :workspaceId AND "workspaceMembers"."userId" = "users"."id"
+          ORDER BY "workspaceMembers"."createdAt"
         `,
         {
           replacements: { workspaceId },
@@ -74,6 +75,53 @@ class WorkspaceController {
           raw: true
         })
       res.json(members)
+    } catch (e) {
+      console.log(e)
+      return res.status(500).json({ message: 'Серверные проблемы. Перезагрузите страницу' })
+    }
+  }
+
+  async getWorkspacesByUser(req, res) {
+    try {
+      const { id } = req.user
+
+      const workspaces = await sequelize.query(
+        ` SELECT "workspaces"."id" 
+          AS "id", "workspaces"."name", "slug"
+          FROM "workspaces", "workspaceMembers"
+          WHERE "workspaceMembers"."userId" = :id AND "workspaceMembers"."workspaceId" = "workspaces"."id"
+        `,
+        {
+          replacements: { id },
+          model: User,
+          raw: true
+        })
+
+      res.json(workspaces)
+    } catch (e) {
+      console.log(e)
+      return res.status(500).json({ message: 'Серверные проблемы. Перезагрузите страницу' })
+    }
+  }
+
+  async chooseWorkspace(req, res) {
+    try {
+      const { user } = req
+      const { id } = req.body
+
+      const member = await WorkspaceMember.findOne({
+        where: {
+          workspaceId: id,
+          userId: user.id
+        }
+      })
+
+      if (!member) {
+        return res.status(403).json({ message: 'Отказано в доступе' })
+      }
+
+      const token = generateJwt({ id: user.id, email: user.email, name: user.name, workspaceId: id })
+      res.json({ token })
     } catch (e) {
       console.log(e)
       return res.status(500).json({ message: 'Серверные проблемы. Перезагрузите страницу' })

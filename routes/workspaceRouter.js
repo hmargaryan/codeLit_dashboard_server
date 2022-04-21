@@ -12,8 +12,15 @@ const createWorkspaceSchema = Yup.object().shape({
   slug: Yup.string().required('Введите слаг рабочего пространства')
 })
 
+const chooseWorkspaceSchema = Yup.object().shape({
+  id: Yup.string()
+    .required('Выберите рабочее пространство')
+})
+
 router.post('/create', authMiddleware, validationMiddleware(createWorkspaceSchema), workspaceController.createWorkspace)
 router.get('/info', authMiddleware, workspaceMemberMiddleware, workspaceController.getWorkspaceById)
 router.get('/members', authMiddleware, workspaceMemberMiddleware, workspaceController.getWorkspaceMembers)
+router.get('/all', authMiddleware, workspaceController.getWorkspacesByUser)
+router.post('/choose', authMiddleware, validationMiddleware(chooseWorkspaceSchema), workspaceController.chooseWorkspace)
 
 module.exports = router

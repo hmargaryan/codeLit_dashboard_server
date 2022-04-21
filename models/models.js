@@ -22,9 +22,20 @@ const WorkspaceMember = sequelize.define('workspaceMember', {
   role: { type: DataTypes.STRING, allowNull: false }
 })
 
+const Task = sequelize.define('task', {
+  id: { type: DataTypes.UUID, primaryKey: true, defaultValue: DataTypes.UUIDV4 },
+  name: { type: DataTypes.STRING, allowNull: false },
+  description: { type: DataTypes.TEXT, allowNull: false },
+  example: { type: DataTypes.TEXT, allowNull: false }
+})
+
 Workspace.belongsToMany(User, { through: WorkspaceMember })
 Workspace.belongsTo(User, { foreignKey: 'owner' })
+Workspace.hasMany(Task)
 
 User.belongsToMany(Workspace, { through: WorkspaceMember })
 
-module.exports = { User, Workspace, WorkspaceMember }
+Task.belongsTo(Workspace)
+
+
+module.exports = { User, Workspace, WorkspaceMember, Task }
