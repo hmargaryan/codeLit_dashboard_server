@@ -9,11 +9,16 @@ const router = new Router()
 
 const addTaskSchema = Yup.object().shape({
   name: Yup.string()
-    .required('Введите название'),
+      .required('Введите название'),
   description: Yup.string()
-    .required('Введите описание'),
-  example: Yup.string()
-    .required('Введите пример кода')
+      .required('Введите описание'),
+  time: Yup.number()
+      .min(1, 'Время должно быть больше нуля'),
+  difficulty: Yup.string()
+      .oneOf(['easy', 'medium', 'hard', '', null])
+      .nullable(),
+  template: Yup.string(),
+  additionalInfo: Yup.string()
 })
 
 router.post('/create', authMiddleware, workspaceMemberMiddleware, validationMiddleware(addTaskSchema), taskController.createTask)

@@ -26,7 +26,10 @@ const Task = sequelize.define('task', {
   id: { type: DataTypes.UUID, primaryKey: true, defaultValue: DataTypes.UUIDV4 },
   name: { type: DataTypes.STRING, allowNull: false },
   description: { type: DataTypes.TEXT, allowNull: false },
-  example: { type: DataTypes.TEXT, allowNull: false }
+  time: { type: DataTypes.INTEGER },
+  difficulty: { type: DataTypes.STRING },
+  template: { type: DataTypes.TEXT },
+  additionalInfo: { type: DataTypes.TEXT }
 })
 
 Workspace.belongsToMany(User, { through: WorkspaceMember })

@@ -6,7 +6,7 @@ class TaskController {
   async createTask(req, res) {
     try {
       const { workspaceId } = req.user
-      const { name, description, example } = req.body
+      const { name, description, time, difficulty, template, additionalInfo } = req.body
 
       const taskToFind = await Task.findOne({
         where: {
@@ -18,9 +18,10 @@ class TaskController {
         return res.status(404).json({ field: 'name', message: 'Задача с таким названием уже существует в рабочем пространстве' })
       }
 
-      const newTask = await Task.create({ name, description, example, workspaceId })
+      const newTask = await Task.create({ name, description, time, difficulty, template, additionalInfo, workspaceId })
       res.json({ ...newTask, message: 'Задача добавлена в рабочее пространство' })
-    } catch {
+    } catch (e){
+      console.log(e)
       return res.status(500).json({ message: 'Серверные проблемы. Перезагрузите страницу' })
     }
   }
@@ -35,8 +36,7 @@ class TaskController {
           workspaceId,
           [Op.or]: [
             { name: { [Op.iLike]: `%${term}%` } },
-            { description: { [Op.iLike]: `%${term}%` } },
-            { example: { [Op.iLike]: `%${term}%` } }
+            { description: { [Op.iLike]: `%${term}%` } }
           ]
         },
         order: [['createdAt', 'ASC']]
@@ -71,7 +71,7 @@ class TaskController {
   async editTask(req, res) {
     try {
       const { user, params: { id } } = req
-      const { name, description, example } = req.body
+      const { name, description, time, difficulty, template, additionalInfo } = req.body
 
       if (!id) {
         return res.status(404).json({ message: 'Укажите задачу для изменения' })
@@ -92,7 +92,7 @@ class TaskController {
         return res.status(404).json({ field: 'name', message: 'Задача с таким названием уже существует в рабочем пространстве' })
       }
 
-      const newTask = await task.update({ name, description, example })
+      const newTask = await task.update({ name, description, time, difficulty, template, additionalInfo })
       res.json(newTask)
     } catch (e) {
       console.log(e)
