@@ -64,7 +64,8 @@ class WorkspaceController {
         ` SELECT "users"."id" 
           AS "id", "name", "email",
           "workspaceMembers"."role",
-          "workspaceMembers"."canAddCandidate"
+          "workspaceMembers"."canAddCandidate",
+          "workspaceMembers"."id"
           FROM "workspaceMembers", "users"
           WHERE "workspaceMembers"."workspaceId" = :workspaceId AND "workspaceMembers"."userId" = "users"."id"
           ORDER BY "workspaceMembers"."createdAt"

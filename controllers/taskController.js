@@ -48,6 +48,23 @@ class TaskController {
     }
   }
 
+  async getTaskById(req, res) {
+    try {
+      const { workspaceId } = req.user
+      const { id } = req.params
+
+      if (!id) {
+        return res.status(500).json({ message: 'Такой задачи не существует' })
+      }
+
+      const task = await Task.findOne({ where: { id, workspaceId }})
+
+      res.json(task)
+    } catch {
+      return res.status(500).json({ message: 'Серверные проблемы. Перезагрузите страницу' })
+    }
+  }
+
   async deleteTask(req, res) {
     try {
       const { user, params: { id } } = req

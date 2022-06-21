@@ -18,6 +18,7 @@ const Workspace = sequelize.define('workspace', {
 })
 
 const WorkspaceMember = sequelize.define('workspaceMember', {
+  id: { type: DataTypes.UUID, primaryKey: true, defaultValue: DataTypes.UUIDV4 },
   canAddCandidate: { type: DataTypes.BOOLEAN, defaultValue: false },
   role: { type: DataTypes.STRING, allowNull: false }
 })
@@ -32,13 +33,52 @@ const Task = sequelize.define('task', {
   additionalInfo: { type: DataTypes.TEXT }
 })
 
+const Template = sequelize.define('template', {
+  id: { type: DataTypes.UUID, primaryKey: true, defaultValue: DataTypes.UUIDV4 },
+  data: { type: DataTypes.JSONB, allowNull: false }
+})
+
+const Candidate = sequelize.define('candidate', {
+  id: { type: DataTypes.UUID, primaryKey: true, defaultValue: DataTypes.UUIDV4 },
+  name: { type: DataTypes.STRING, allowNull: false },
+  email: { type: DataTypes.STRING, allowNull: false },
+  position: { type: DataTypes.STRING, allowNull: false },
+  level: { type: DataTypes.STRING, allowNull: false },
+  status: { type: DataTypes.STRING, allowNull: false }
+})
+
+const Interview = sequelize.define('interview', {
+  id: { type: DataTypes.UUID, primaryKey: true, defaultValue: DataTypes.UUIDV4 },
+  name: { type: DataTypes.STRING, allowNull: false },
+  date: { type: DataTypes.STRING, allowNull: false },
+  time: { type: DataTypes.STRING, allowNull: false },
+  comments: { type: DataTypes.TEXT },
+  result: { type: DataTypes.JSONB }
+})
+
 Workspace.belongsToMany(User, { through: WorkspaceMember })
 Workspace.belongsTo(User, { foreignKey: 'owner' })
 Workspace.hasMany(Task)
+Workspace.hasMany(Template)
+Workspace.hasMany(Candidate)
+Workspace.hasMany(Interview)
+
+WorkspaceMember.hasMany(Interview)
+WorkspaceMember.belongsTo(User)
 
 User.belongsToMany(Workspace, { through: WorkspaceMember })
 
 Task.belongsTo(Workspace)
 
+Template.belongsTo(Workspace)
+Template.hasMany(Interview)
 
-module.exports = { User, Workspace, WorkspaceMember, Task }
+Candidate.belongsTo(Workspace)
+Candidate.hasMany(Interview)
+
+Interview.belongsTo(Workspace)
+Interview.belongsTo(Candidate)
+Interview.belongsTo(WorkspaceMember)
+Interview.belongsTo(Template)
+
+module.exports = { User, Workspace, WorkspaceMember, Task, Template, Candidate, Interview }

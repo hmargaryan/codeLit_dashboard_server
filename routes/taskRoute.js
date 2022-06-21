@@ -25,5 +25,6 @@ router.post('/create', authMiddleware, workspaceMemberMiddleware, validationMidd
 router.get('/all', authMiddleware, workspaceMemberMiddleware, taskController.getTasks)
 router.delete('/delete/:id', authMiddleware, workspaceMemberMiddleware, taskController.deleteTask)
 router.put('/edit/:id', authMiddleware, workspaceMemberMiddleware, validationMiddleware(addTaskSchema), taskController.editTask)
+router.get('/:id', authMiddleware, workspaceMemberMiddleware, taskController.getTaskById)
 
 module.exports = router

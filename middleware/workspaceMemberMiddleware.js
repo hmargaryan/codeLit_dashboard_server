@@ -13,6 +13,7 @@ const checkWorkspaceMember = async (req, res, next) => {
       return res.status(403).json({ message: 'Отказано в доступе' })
     }
     req.user.role = user.role
+    req.user.canAddCandidate = user.canAddCandidate
     next()
   } catch (error) {
     return res.status(403).json({ error })
